@@ -4,7 +4,7 @@ from torchvision import datasets, transforms
 from model import CNN
 
 def dataset(path, batch_size):
-    train_data = datasets.MNIST(path, train=True, download=True, transform=transforms.Compose([
+    train_data = datasets.MNIST(path, train=True, download=False, transform=transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])) # 학습 데이터
@@ -47,10 +47,20 @@ def test(model, loader, criterion):
 
 
 if __name__ == "__main__":
-    lr = 0.01
-    epoch = 2
-    batch_size = 64
-    data_path = '../data/'
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--lr', type=float, default=0.01)
+    parser.add_argument('--batch-size', type=int, default=64)
+    parser.add_argument('--epoch', type=int, default=2)
+    parser.add_argument('--data-path', type=str, default='./data')
+    
+    args = parser.parse_args()
+
+    lr = args.lr
+    epoch = args.epoch
+    batch_size = args.batch_size
+    data_path = args.data_path
 
     print("start train cnn")
     cnn = CNN()
