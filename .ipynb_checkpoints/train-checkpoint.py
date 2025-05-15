@@ -3,12 +3,13 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from model import CNN
 
+
 def dataset(path, batch_size):
     train_data = datasets.MNIST(path, train=True, download=False, transform=transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])) # 학습 데이터
-    train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True, drop_last=True)
     
     test_data = datasets.MNIST(path, train=False, transform=transforms.Compose([
             transforms.ToTensor(),
@@ -34,15 +35,15 @@ def train(model, loader, criterion, optimizer, epoch):
 
 def test(model, loader, criterion):
     model.eval()
-    test_loss = 0.0
+    loss = 0.0
     correct = 0
     with torch.no_grad():
         for data, target in loader:
             output = model(data)
-            test_loss += criterion(output, target).item() # sum up batch loss
+            loss += criterion(output, target).item() # sum up batch loss
             pred = output.argmax(dim=1, keepdim=True) # get the index of the max log-probability
             correct += pred.eq(target.view_as(pred)).sum().item()
-        print('\{"loss": {:.4f}, "correct": {}/{}, "accuracy":{:.0f}\}'.format( test_loss, correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
+        print('{{"loss": {:.4f}, "correct": {}, "total": {}, "accuracy":{:.4f}}}'.format(loss, correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
 
 
 
