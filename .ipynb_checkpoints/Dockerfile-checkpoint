@@ -3,5 +3,4 @@ WORKDIR /workspace
 RUN pip install "numpy<=1.23.5"
 
 COPY . .
-ENTRYPOINT "python"
-CMD ["train.py"]
+ENTRYPOINT ["python", "train.py"]
