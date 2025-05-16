@@ -2,31 +2,32 @@ import torch
 import torch.optim as optim
 from torchvision import datasets, transforms
 from model import CNN
+import logging
 
 
 def dataset(path, batch_size):
     train_data = datasets.MNIST(path, train=True, download=False, transform=transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
-    ])) # 학습 데이터
+    ])) 
     train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True, drop_last=True)
     
     test_data = datasets.MNIST(path, train=False, transform=transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))
-        ])) # 테스트 데이터
+        ])) 
     test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=batch_size, shuffle=True)
 
     return train_loader, test_loader
 
 def train(model, loader, criterion, optimizer, epoch):
-    model.train()  # 학습을 위함    
+    model.train() 
     for epoch in range(epoch):
         for index, (data, target) in enumerate(loader):
-            optimizer.zero_grad()  # 기울기 초기화
+            optimizer.zero_grad()  
             output = model(data)
             loss = criterion(output, target)
-            loss.backward()  # 역전파
+            loss.backward() 
             optimizer.step()
         
             if index % 100 == 0:
@@ -43,8 +44,9 @@ def test(model, loader, criterion):
             loss += criterion(output, target).item() # sum up batch loss
             pred = output.argmax(dim=1, keepdim=True) # get the index of the max log-probability
             correct += pred.eq(target.view_as(pred)).sum().item()
-        print('{{"loss": {:.4f}, "correct": {}, "total": {}, "accuracy":{:.4f}}}'.format(loss, correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
-
+        print('{{"loss": {:.4f}, "correct": {}, "total": {}, "accuracy":{:.4f}}}'.format(loss, correct, len(loader.dataset), 100. * correct / len(loader.dataset)))
+        print('loss={:.4f}'.format(loss))
+        print('accuracy={:.4f}'.format(correct / len(loader.dataset)))
 
 
 if __name__ == "__main__":
@@ -55,6 +57,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--epoch', type=int, default=2)
     parser.add_argument('--data-path', type=str, default='./data')
+    # parser.add_argument('--log_', type=str, default='./data')
     
     args = parser.parse_args()
 
