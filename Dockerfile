@@ -1,7 +1,6 @@
 FROM kubeflownotebookswg/jupyter-pytorch-full:latest
 WORKDIR /workspace
-RUN pip install "numpy<=1.23.5" && pip install -e .
-
 COPY . .
+RUN pip install "numpy<=1.23.5" && pip install -e .
 ENTRYPOINT ""
 CMD  ["python", "train.py"]
