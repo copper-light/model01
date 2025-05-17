@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 from torchvision import datasets, transforms
-from model import CNN
+from cnn import CNN
 import logging
 
 
@@ -49,6 +49,16 @@ def test(model, loader, criterion):
         print('accuracy={:.4f}'.format(correct / len(loader.dataset)))
 
 
+def run(lr, epoch, batch_size, data_path):
+    print("start train cnn")
+    cnn = CNN()
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = optim.SGD(cnn.parameters(), lr=lr)
+    train_loader, test_loader = dataset(data_path, batch_size)
+    train(cnn, train_loader, criterion, optimizer, epoch)
+    test(cnn, test_loader, criterion)
+    
+
 if __name__ == "__main__":
     import argparse
 
@@ -66,11 +76,5 @@ if __name__ == "__main__":
     batch_size = args.batch_size
     data_path = args.data_path
 
-    print("start train cnn")
-    cnn = CNN()
-    criterion = torch.nn.CrossEntropyLoss()
-    optimizer = optim.SGD(cnn.parameters(), lr=lr)
-    train_loader, test_loader = dataset(data_path, batch_size)
-    train(cnn, train_loader, criterion, optimizer, epoch)
-    test(cnn, test_loader, criterion)
+    run(lr, epoch, batch_size, data_path)
     
