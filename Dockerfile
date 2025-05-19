@@ -1,6 +1,6 @@
 FROM kubeflownotebookswg/jupyter-pytorch-full:latest
 USER root
-RUN mkdir -p /workspace &&  chown jovyan /workspace
+RUN mkdir -p /workspace && chmod +777 /workspace 
 USER jovyan
 WORKDIR /workspace
 COPY . .

@@ -1,6 +1,0 @@
-README.md
-setup.py
-cnn_model.egg-info/PKG-INFO
-cnn_model.egg-info/SOURCES.txt
-cnn_model.egg-info/dependency_links.txt
-cnn_model.egg-info/top_level.txt

@@ -6,7 +6,7 @@ import logging
 
 
 def dataset(path, batch_size):
-    train_data = datasets.MNIST(path, train=True, download=False, transform=transforms.Compose([
+    train_data = datasets.MNIST(path, train=True, download=True, transform=transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])) 
