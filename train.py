@@ -31,7 +31,7 @@ def train(model, loader, criterion, optimizer, epoch):
             optimizer.step()
         
             if index % 100 == 0:
-                print("loss of {} epoch, {}/{} index : {}".format(epoch, index, len(train_loader), loss.item()))
+                print("loss of {} epoch, {}/{} index : {}".format(epoch, index, len(loader), loss.item()))
 
 
 def test(model, loader, criterion):
