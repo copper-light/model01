@@ -5,5 +5,5 @@ USER jovyan
 WORKDIR /workspace
 COPY . .
 RUN pip install "numpy<=1.23.5"
-ENTRYPOINT ""
+ENTRYPOINT []
 CMD  ["python", "train.py"]
